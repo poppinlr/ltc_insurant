@@ -33,7 +33,11 @@ public class AccessEntity{
 
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name="access_role",joinColumns=@JoinColumn(name="access_id"),
-            inverseJoinColumns=@JoinColumn(name="role_id"))
+    @JoinTable(name = "access_role",
+            joinColumns = @JoinColumn(name = "access_id", referencedColumnName = "access_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"))
     private List<RoleEntity> roleEntities;
+//    @JoinTable(name="access_role",joinColumns=@JoinColumn(name="access_id"),
+//            inverseJoinColumns=@JoinColumn(name="role_id"))
+
 }

@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @Data
 @Table(name = "role")
-@ToString(exclude = "accessEntities")
+@ToString(exclude = {"accessEntities","companyEntity"})
 public class RoleEntity {
 
     @Id
@@ -34,6 +34,10 @@ public class RoleEntity {
     @Column(name = "company_id")
     private Long companyId;
 
-    @ManyToMany(mappedBy = "roleEntities", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "roleEntities", cascade = CascadeType.ALL)
     private List<AccessEntity> accessEntities;
+
+    @ManyToOne
+    @JoinColumn(name = "companyEntity", referencedColumnName = "company_id")
+    private CompanyEntity companyEntity;
 }

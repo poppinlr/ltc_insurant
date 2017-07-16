@@ -1,8 +1,11 @@
+import com.google.common.collect.Lists;
 import com.leapstack.ltc.Application;
 import com.leapstack.ltc.entity.menu.auth.AccessEntity;
+import com.leapstack.ltc.entity.menu.auth.CompanyEntity;
 import com.leapstack.ltc.entity.menu.auth.MenuEntity;
 import com.leapstack.ltc.entity.menu.auth.RoleEntity;
 import com.leapstack.ltc.repository.menu.auth.AccessEntityRepository;
+import com.leapstack.ltc.repository.menu.auth.CompanyEntityRepository;
 import com.leapstack.ltc.repository.menu.auth.MenuEntityRepository;
 import com.leapstack.ltc.repository.menu.auth.RoleEntityRepository;
 import com.leapstack.ltc.service.menu.auth.MenuService;
@@ -15,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.persistence.Access;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,47 +42,53 @@ public class TempTest {
     @Autowired
     private RoleEntityRepository roleEntityRepository;
 
-    @Test
-    public void testContact(){
-        menuService.getAllMenuService();
-    }
+    @Autowired
+    private CompanyEntityRepository companyEntityRepository;
 
     @Test
-    public void generate(){
+    public void saveMenu(){
         MenuEntity menuEntity = new MenuEntity();
-//        menuEntity.setLevel(2);
-        menuEntity.setMenuName("menu2");
+        menuEntity.setMenuName("menuName");
         menuEntity.setUrl("/");
-
         menuEntityRepository.save(menuEntity);
     }
 
     @Test
-    public void generate2(){
+    @Transactional
+    public void getMenu(){
+        menuEntityRepository.findAll();
+    }
+
+    @Test
+    @Transactional
+    public void saveAccess(){
         AccessEntity accessEntity = new AccessEntity();
-        accessEntity.setAccessName("access2");
+        accessEntity.setAccessName("accessName");
+        accessEntity.setMenuId(1L);
+
         accessEntityRepository.save(accessEntity);
     }
 
     @Test
-    public void manytomanytest(){
+    @Transactional
+    public void saveMenuDependOnAccess() {
+        MenuEntity menuEntity = new MenuEntity();
+        menuEntity.setMenuName("menuDep");
+        menuEntity.setUrl("/");
+
+//        menuEntityRepository.save(menuEntity);
+
         AccessEntity accessEntity = new AccessEntity();
-        accessEntity.setAccessName("accesstest");
-        ArrayList<AccessEntity> accessEntities = new ArrayList<>();
-        accessEntities.add(accessEntity);
+        accessEntity.setAccessName("accessNameDep");
+        accessEntity.setMenuEntity(menuEntity);
 
-        RoleEntity roleEntity = new RoleEntity();
-        roleEntity.setRoleName("role1");
-        roleEntity.setActive(true);
-        roleEntity.setComment("comment");
-        roleEntity.setAccessEntities(accessEntities);
-
-        roleEntityRepository.save(roleEntity);
+        accessEntityRepository.save(accessEntity);
     }
 
     @Test
-    public void getAllAccess(){
-        List<AccessEntity> list = accessEntityRepository.findAll();
-        log.info(list.size());
+    public void getAccess(){
+        MenuEntity menuEntity = accessEntityRepository.findOne(1L).getMenuEntity();
+        log.info(menuEntity.getMenuId());
     }
+
 }

@@ -36,6 +36,6 @@ public class MenuEntity{
     @Column(name = "url")
     private String url;
 
-    @OneToMany(mappedBy = "menuEntity", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "menuEntity", cascade = CascadeType.ALL)
     private List<AccessEntity> accessEntities;
 }

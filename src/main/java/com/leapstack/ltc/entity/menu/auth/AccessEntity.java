@@ -26,18 +26,14 @@ public class AccessEntity{
     @Column(name = "menu_id")
     private Long menuId;
 
-    @ManyToOne
-//    @JoinColumn(name = "menu_id")
-    @JoinColumn(name="menu_id",referencedColumnName="menu_id", insertable=false, updatable=false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "menu_ id", referencedColumnName = "menu_id")
     private MenuEntity menuEntity;
 
-
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "access_role",
             joinColumns = @JoinColumn(name = "access_id", referencedColumnName = "access_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"))
     private List<RoleEntity> roleEntities;
-//    @JoinTable(name="access_role",joinColumns=@JoinColumn(name="access_id"),
-//            inverseJoinColumns=@JoinColumn(name="role_id"))
 
 }

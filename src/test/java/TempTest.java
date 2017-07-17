@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.persistence.Access;
@@ -54,41 +55,46 @@ public class TempTest {
     }
 
     @Test
-    @Transactional
-    public void getMenu(){
-        menuEntityRepository.findAll();
-    }
-
-    @Test
-    @Transactional
-    public void saveAccess(){
+    public void createAccessWithMenu(){
         AccessEntity accessEntity = new AccessEntity();
         accessEntity.setAccessName("accessName");
-        accessEntity.setMenuId(1L);
-
+        MenuEntity menuEntity = menuEntityRepository.findOne(1L);
+        accessEntity.setMenuEntity(menuEntity);
         accessEntityRepository.save(accessEntity);
     }
 
     @Test
     @Transactional
-    public void saveMenuDependOnAccess() {
+//    @Rollback(false)
+    public void createAccessAndMenu(){
         MenuEntity menuEntity = new MenuEntity();
-        menuEntity.setMenuName("menuDep");
-        menuEntity.setUrl("/");
-
-//        menuEntityRepository.save(menuEntity);
+        menuEntity.setMenuName("---");
+        menuEntity.setUrl("/___");
 
         AccessEntity accessEntity = new AccessEntity();
-        accessEntity.setAccessName("accessNameDep");
         accessEntity.setMenuEntity(menuEntity);
+        accessEntity.setAccessName("access1");
 
         accessEntityRepository.save(accessEntity);
     }
 
     @Test
-    public void getAccess(){
-        MenuEntity menuEntity = accessEntityRepository.findOne(1L).getMenuEntity();
-        log.info(menuEntity.getMenuId());
+    public void createCompany(){
+        CompanyEntity companyEntity = new CompanyEntity();
+        companyEntity.setCompanyName("company");
+        companyEntityRepository.save(companyEntity);
     }
 
+    @Test
+    public void createRoleWithCompany(){
+        RoleEntity roleEntity = new RoleEntity();
+        roleEntity.setCompanyEntity(companyEntityRepository.findOne(1L));
+        roleEntity.setRoleName("role1");
+        roleEntityRepository.save(roleEntity);
+    }
+
+    @Test
+    public void createAccessWithRole(){
+
+    }
 }

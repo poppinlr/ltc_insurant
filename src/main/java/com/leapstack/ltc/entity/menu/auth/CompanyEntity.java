@@ -34,7 +34,6 @@ public class CompanyEntity {
     @Column(name = "parent_id")
     private Long parentId;//TODO verify this.level > parent_level
 
-    @OneToMany(mappedBy = "companyEntity", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "companyEntity")
     private List<RoleEntity> roleEntities;
-
 }

@@ -23,17 +23,11 @@ public class AccessEntity{
     @Column(name = "access_name")
     private String accessName;
 
-    @Column(name = "menu_id")
-    private Long menuId;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "menu_ id", referencedColumnName = "menu_id")
+    @ManyToOne
+    @JoinColumn(name = "menu_id")
     private MenuEntity menuEntity;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "access_role",
-            joinColumns = @JoinColumn(name = "access_id", referencedColumnName = "access_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"))
+    @ManyToMany(mappedBy = "accessEntities")
     private List<RoleEntity> roleEntities;
 
 }
